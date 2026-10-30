@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Invoices - VehicleCare</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #1f3c88;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #1f3c88;
+            color: white;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1f3c88;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Invoices</h1>
+
+        {% if invoices %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Invoice ID</th>
+                    <th>Vehicle Number</th>
+                    <th>Service</th>
+                    <th>Labour Cost</th>
+                    <th>Parts Cost</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for invoice in invoices %}
+                <tr>
+                    <td>{{ invoice.invoice_id }}</td>
+                    <td>{{ invoice.vehicle_number }}</td>
+                    <td>{{ invoice.service_type }}</td>
+                    <td>₹{{ invoice.labour_cost }}</td>
+                    <td>₹{{ invoice.parts_cost }}</td>
+                    <td><strong>₹{{ invoice.total_amount }}</strong></td>
+                    <td>{{ invoice.invoice_date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No invoices are available for your vehicles yet.</p>
+        {% endif %}
+
+        <a class="back" href="{{ url_for('dashboard') }}">
+            Back to Dashboard
+        </a>
+    </div>
+</body>
+</html>

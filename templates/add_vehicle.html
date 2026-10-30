@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Vehicle | VehicleCare</title>
+
+```
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f4f7fc;
+        color: #172033;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 245px;
+        height: 100vh;
+        padding: 28px 18px;
+        background: #111c35;
+        color: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 8px 35px;
+    }
+
+    .brand-icon {
+        width: 43px;
+        height: 43px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: #2563eb;
+        font-size: 23px;
+    }
+
+    .brand h2 {
+        color: white;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .brand h2 span {
+        color: #80adff;
+    }
+
+    .nav-label {
+        padding: 0 12px;
+        margin-bottom: 13px;
+        color: #8d9ab4;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 14px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+        color: #bdc8dc;
+        font-size: 13px;
+        transition: .2s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: #263a62;
+        color: white;
+    }
+
+    .nav-link.active {
+        border-left: 3px solid #60a5fa;
+    }
+
+    .nav-icon {
+        width: 22px;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    .sidebar-bottom {
+        margin-top: auto;
+        border-top: 1px solid #293650;
+        padding-top: 18px;
+    }
+
+    .main {
+        max-width: 1500px;
+        margin-left: 245px;
+        padding: 35px;
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .eyebrow {
+        margin-bottom: 9px;
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+
+    .topbar h1 {
+        font-size: 28px;
+        letter-spacing: -.8px;
+    }
+
+    .topbar p {
+        margin-top: 9px;
+        color: #718096;
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .profile {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 14px;
+        border: 1px solid #e5eaf2;
+        border-radius: 12px;
+        background: white;
+    }
+
+    .avatar {
+        display: grid;
+        place-items: center;
+        width: 39px;
+        height: 39px;
+        border-radius: 11px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-weight: 800;
+    }
+
+    .profile strong {
+        font-size: 12px;
+    }
+
+    .profile small {
+        display: block;
+        margin-top: 4px;
+        color: #718096;
+        font-size: 10px;
+    }
+
+    .banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding: 27px 30px;
+        margin-bottom: 25px;
+        border-radius: 17px;
+        background: linear-gradient(115deg, #1d4ed8, #4788fa);
+        color: white;
+    }
+
+    .banner h2 {
+        margin-bottom: 9px;
+        font-size: 22px;
+    }
+
+    .banner p {
+        max-width: 560px;
+        color: #e1edff;
+        font-size: 12px;
+        line-height: 1.8;
+    }
+
+    .banner-icon {
+        flex-shrink: 0;
+        font-size: 55px;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(240px, .8fr);
+        align-items: start;
+        gap: 23px;
+    }
+
+    .card {
+        padding: 27px;
+        border: 1px solid #e6ebf3;
+        border-radius: 16px;
+        background: white;
+        box-shadow: 0 5px 20px rgba(26, 48, 85, .025);
+    }
+
+    .card-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding-bottom: 22px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .heading-icon {
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 47px;
+        height: 47px;
+        border-radius: 13px;
+        background: #eaf2ff;
+        font-size: 23px;
+    }
+
+    .card-heading h2 {
+        font-size: 17px;
+    }
+
+    .card-heading p {
+        margin-top: 6px;
+        color: #718096;
+        font-size: 11px;
+        line-height: 1.7;
+    }
+
+    .form-group {
+        margin-bottom: 21px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 9px;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .required {
+        color: #dc2626;
+    }
+
+    input,
+    select {
+        width: 100%;
+        min-height: 45px;
+        padding: 12px 14px;
+        border: 1px solid #dce3ed;
+        border-radius: 9px;
+        outline: none;
+        background: white;
+        color: #172033;
+        font-family: inherit;
+        font-size: 12px;
+        transition: .2s;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+    }
+
+    .form-help {
+        display: block;
+        margin-top: 7px;
+        color: #8792a5;
+        font-size: 10px;
+        line-height: 1.7;
+    }
+
+    .two-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 17px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 18px;
+        border: none;
+        border-radius: 9px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        flex: 1;
+        background: #2563eb;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #344054;
+    }
+
+    .side-card {
+        padding: 22px;
+        margin-bottom: 18px;
+        border: 1px solid #e6ebf3;
+        border-radius: 15px;
+        background: white;
+    }
+
+    .side-card h3 {
+        margin-bottom: 17px;
+        font-size: 14px;
+    }
+
+    .step {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 19px;
+    }
+
+    .step:last-child {
+        margin-bottom: 0;
+    }
+
+    .step-number {
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: #eaf2ff;
+        color: #2563eb;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .step h4 {
+        margin: 2px 0 6px;
+        font-size: 11px;
+    }
+
+    .step p {
+        color: #718096;
+        font-size: 10px;
+        line-height: 1.7;
+    }
+
+    .tip-card {
+        padding: 20px;
+        border: 1px solid #dbeafe;
+        border-radius: 14px;
+        background: #eff6ff;
+    }
+
+    .tip-card h3 {
+        margin-bottom: 9px;
+        color: #1d4ed8;
+        font-size: 13px;
+    }
+
+    .tip-card p {
+        color: #465c7e;
+        font-size: 11px;
+        line-height: 1.8;
+    }
+
+    .footer {
+        margin-top: 35px;
+        color: #8994a7;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    @media (max-width: 1000px) {
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .sidebar {
+            position: static;
+            width: 100%;
+            height: auto;
+            padding: 15px;
+        }
+
+        .brand {
+            padding: 0 5px 15px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+        }
+
+        .nav-label,
+        .sidebar-bottom,
+        .nav-link span:not(.nav-icon) {
+            display: none;
+        }
+
+        .nav-link {
+            flex-shrink: 0;
+            padding: 11px 13px;
+            margin: 0;
+        }
+
+        .main {
+            margin-left: 0;
+            padding: 22px 15px;
+        }
+
+        .topbar h1 {
+            font-size: 23px;
+        }
+
+        .profile {
+            padding: 7px;
+        }
+
+        .profile > div:last-child {
+            display: none;
+        }
+
+        .banner {
+            padding: 22px;
+        }
+
+        .banner h2 {
+            font-size: 19px;
+        }
+
+        .banner-icon {
+            font-size: 38px;
+        }
+
+        .card {
+            padding: 19px;
+        }
+
+        .two-columns {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <a href="/dashboard" class="brand">
+        <div class="brand-icon">🚘</div>
+        <h2>Vehicle<span>Care</span></h2>
+    </a>
+
+```
+<div class="nav-label">MAIN MENU</div>
+
+<nav>
+    <a href="/dashboard" class="nav-link">
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="/add_vehicle" class="nav-link active">
+        <span class="nav-icon">🚗</span>
+        <span>My Vehicles</span>
+    </a>
+
+    <a href="/book_service" class="nav-link">
+        <span class="nav-icon">🔧</span>
+        <span>Book a Service</span>
+    </a>
+
+    <a href="/dashboard#services" class="nav-link">
+        <span class="nav-icon">📋</span>
+        <span>Service History</span>
+    </a>
+
+    <a href="/dashboard#invoices" class="nav-link">
+        <span class="nav-icon">🧾</span>
+        <span>My Invoices</span>
+    </a>
+</nav>
+
+<div class="sidebar-bottom">
+    <a href="/logout" class="nav-link">
+        <span class="nav-icon">↪</span>
+        <span>Logout</span>
+    </a>
+</div>
+```
+
+</aside>
+
+<main class="main">
+
+```
+<header class="topbar">
+    <div>
+        <div class="eyebrow">VEHICLECARE CUSTOMER PORTAL</div>
+        <h1>Add Your Vehicle</h1>
+        <p>Register your vehicle to book services and track its maintenance.</p>
+    </div>
+
+    <div class="profile">
+        <div class="avatar">
+            {{ (session.get("user_name") or "U")[0]|upper }}
+        </div>
+        <div>
+            <strong>{{ session.get("user_name", "Customer") }}</strong>
+            <small>Customer Account</small>
+        </div>
+    </div>
+</header>
+
+<section class="banner">
+    <div>
+        <h2>Your Vehicle's Journey Starts Here 🚗</h2>
+        <p>Add your vehicle details below. Once registered, you can request services and view your service history from your dashboard.</p>
+    </div>
+    <div class="banner-icon">🛠️</div>
+</section>
+
+<div class="content-grid">
+
+    <section class="card">
+
+        <div class="card-heading">
+            <div class="heading-icon">🚘</div>
+            <div>
+                <h2>Vehicle Information</h2>
+                <p>Enter the correct details for your vehicle.</p>
+            </div>
+        </div>
+
+        <form method="POST" action="/add_vehicle">
+
+            <div class="form-group">
+                <label for="vehicle_number">
+                    Vehicle Registration Number <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="vehicle_number"
+                    name="vehicle_number"
+                    placeholder="e.g. KA17AB1234"
+                    maxlength="20"
+                    required
+                    style="text-transform:uppercase"
+                >
+
+                <span class="form-help">Enter the registration number shown on your vehicle's registration certificate.</span>
+            </div>
+
+            <div class="two-columns">
+
+                <div class="form-group">
+                    <label for="brand">
+                        Vehicle Brand <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="brand"
+                        name="brand"
+                        placeholder="e.g. Honda"
+                        maxlength="50"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="model">
+                        Vehicle Model <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="model"
+                        name="model"
+                        placeholder="e.g. City"
+                        maxlength="50"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="two-columns">
+
+                <div class="form-group">
+                    <label for="year">
+                        Manufacturing Year <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="year"
+                        name="year"
+                        placeholder="e.g. 2023"
+                        min="1900"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="fuel_type">
+                        Fuel Type <span class="required">*</span>
+                    </label>
+
+                    <select id="fuel_type" name="fuel_type" required>
+                        <option value="">-- Select Fuel Type --</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Electric">Electric</option>
+                        <option value="CNG">CNG</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="LPG">LPG</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <a href="/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+                <button type="submit" class="btn btn-primary">＋ Register Vehicle</button>
+            </div>
+
+        </form>
+    </section>
+
+    <aside>
+
+        <div class="side-card">
+            <h3>📌 What Happens Next?</h3>
+
+            <div class="step">
+                <div class="step-number">01</div>
+                <div>
+                    <h4>Register Your Vehicle</h4>
+                    <p>Enter the vehicle number, brand, model, year and fuel type.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">02</div>
+                <div>
+                    <h4>Book a Service</h4>
+                    <p>Choose your registered vehicle and the service you need.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">03</div>
+                <div>
+                    <h4>Track Progress</h4>
+                    <p>Check service requests and mechanic assignments on your dashboard.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tip-card">
+            <h3>💡 Before You Continue</h3>
+            <p>Double-check your registration number and manufacturing year. Accurate details help the service team identify your vehicle correctly.</p>
+        </div>
+
+    </aside>
+
+</div>
+
+<footer class="footer">
+    © 2026 VehicleCare. Your vehicle, our priority.
+</footer>
+```
+
+</main>
+
+<script>
+    const yearInput = document.getElementById("year");
+    yearInput.max = new Date().getFullYear();
+
+    const vehicleNumberInput = document.getElementById("vehicle_number");
+
+    vehicleNumberInput.addEventListener("input", function () {
+        this.value = this.value.toUpperCase();
+    });
+</script>
+
+</body>
+</html>

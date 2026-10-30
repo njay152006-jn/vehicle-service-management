@@ -1,0 +1,604 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Services | VehicleCare</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: #111827;
+            color: white;
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            padding: 0 10px 35px;
+        }
+
+        .brand span {
+            color: #38bdf8;
+        }
+
+        .menu-label {
+            color: #94a3b8;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            padding: 0 12px;
+            margin-bottom: 14px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #263449;
+            color: #38bdf8;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 25px;
+        }
+
+        .logout {
+            color: #fca5a5;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 32px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            background: #2563eb;
+            color: white;
+            padding: 12px 17px;
+            text-decoration: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 26px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 14px;
+            padding: 21px;
+            box-shadow: 0 5px 18px #0f172a08;
+        }
+
+        .summary-card p {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .summary-card h2 {
+            font-size: 29px;
+            color: #172554;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px #0f172a08;
+        }
+
+        .table-heading {
+            padding: 23px 24px;
+            border-bottom: 1px solid #e8edf4;
+        }
+
+        .table-heading h2 {
+            font-size: 19px;
+            margin-bottom: 6px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1150px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 18px;
+            text-align: left;
+            border-bottom: 1px solid #eef2f7;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .id-badge {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 7px;
+            padding: 5px 8px;
+            font-weight: 700;
+        }
+
+        .service-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .description {
+            max-width: 220px;
+            min-width: 140px;
+            color: #64748b;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .requested {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .assigned {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .in-progress {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-form {
+            margin-top: 12px;
+            min-width: 145px;
+        }
+
+        select {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #334155;
+            font-size: 12px;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #2563eb18;
+        }
+
+        .update-btn {
+            width: 100%;
+            padding: 9px 12px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .update-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .mechanic-name {
+            font-weight: 600;
+        }
+
+        .specialization {
+            display: inline-block;
+            margin-top: 5px;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .unassigned {
+            color: #b45309;
+            background: #fef3c7;
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            padding: 45px 20px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .empty-state h3 {
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 26px 0 5px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 950px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .main {
+                padding: 23px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .brand {
+                padding: 0 8px 18px;
+            }
+
+            .menu-label {
+                display: none;
+            }
+
+            .sidebar-bottom {
+                margin-top: 10px;
+                padding-top: 0;
+            }
+
+            .main {
+                padding: 20px 14px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">Vehicle<span>Care</span></div>
+
+        <div class="menu-label">ADMIN MENU</div>
+
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+                ▦ &nbsp; Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_services') }}" class="nav-link active">
+                🔧 &nbsp; Manage Services
+            </a>
+
+            <a href="{{ url_for('mechanics') }}" class="nav-link">
+                🧑‍🔧 &nbsp; Manage Mechanics
+            </a>
+
+            <a href="{{ url_for('assign_mechanic') }}" class="nav-link">
+                👨‍🔧 &nbsp; Assign Mechanic
+            </a>
+
+            <a href="{{ url_for('admin_invoices') }}" class="nav-link">
+                🧾 &nbsp; Manage Invoices
+            </a>
+
+            <a href="{{ url_for('create_invoice') }}" class="nav-link">
+                ＋ &nbsp; Create Invoice
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="{{ url_for('home') }}" class="nav-link">
+                ⌂ &nbsp; View Website
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="nav-link logout">
+                ↪ &nbsp; Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Manage Services</h1>
+                <p class="subtitle">
+                    Track customer service requests, update progress, and check mechanic assignments.
+                </p>
+            </div>
+
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+                ← Dashboard
+            </a>
+        </header>
+
+        <section class="summary-grid">
+            <div class="summary-card">
+                <p>Total Service Requests</p>
+                <h2>{{ services|length }}</h2>
+            </div>
+
+            <div class="summary-card">
+                <p>Currently In Progress</p>
+                <h2>
+                    {{ services|selectattr(5, 'equalto', 'In Progress')|list|length }}
+                </h2>
+            </div>
+
+            <div class="summary-card">
+                <p>Completed Services</p>
+                <h2>
+                    {{ services|selectattr(5, 'equalto', 'Completed')|list|length }}
+                </h2>
+            </div>
+        </section>
+
+        <section class="table-card">
+            <div class="table-heading">
+                <h2>All Service Requests</h2>
+                <p class="subtitle">
+                    Update a service's status using the controls in its row.
+                </p>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Service ID</th>
+                        <th>Vehicle ID</th>
+                        <th>Service Type</th>
+                        <th>Description</th>
+                        <th>Service Date</th>
+                        <th>Status & Update</th>
+                        <th>Assigned Mechanic</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for service in services %}
+                    {% set current_status = service[5] or 'Requested' %}
+
+                    <tr>
+                        <td>
+                            <span class="id-badge">#{{ service[0] }}</span>
+                        </td>
+
+                        <td>{{ service[1] }}</td>
+
+                        <td class="service-name">{{ service[2] }}</td>
+
+                        <td class="description">
+                            {{ service[3] or 'No description provided' }}
+                        </td>
+
+                        <td>{{ service[4] or 'Not specified' }}</td>
+
+                        <td>
+                            <span class="status
+                                {% if current_status == 'Requested' %}requested
+                                {% elif current_status == 'Assigned' %}assigned
+                                {% elif current_status == 'In Progress' %}in-progress
+                                {% elif current_status == 'Completed' %}completed
+                                {% elif current_status == 'Cancelled' %}cancelled
+                                {% endif %}">
+                                {{ current_status }}
+                            </span>
+
+                            <form action="/update_service_status"
+                                  method="POST"
+                                  class="status-form">
+
+                                <input type="hidden"
+                                       name="service_id"
+                                       value="{{ service[0] }}">
+
+                                <select name="status" required>
+                                    <option value="Requested"
+                                        {% if current_status == 'Requested' %}selected{% endif %}>
+                                        Requested
+                                    </option>
+
+                                    <option value="Assigned"
+                                        {% if current_status == 'Assigned' %}selected{% endif %}>
+                                        Assigned
+                                    </option>
+
+                                    <option value="In Progress"
+                                        {% if current_status == 'In Progress' %}selected{% endif %}>
+                                        In Progress
+                                    </option>
+
+                                    <option value="Completed"
+                                        {% if current_status == 'Completed' %}selected{% endif %}>
+                                        Completed
+                                    </option>
+
+                                    <option value="Cancelled"
+                                        {% if current_status == 'Cancelled' %}selected{% endif %}>
+                                        Cancelled
+                                    </option>
+                                </select>
+
+                                <button type="submit" class="update-btn">
+                                    Update Status
+                                </button>
+                            </form>
+                        </td>
+
+                        <td>
+                            {% if service[6] %}
+                                <div class="mechanic-name">{{ service[6] }}</div>
+
+                                {% if service[7] %}
+                                    <span class="specialization">
+                                        {{ service[7] }}
+                                    </span>
+                                {% endif %}
+                            {% else %}
+                                <span class="unassigned">Not Assigned</span>
+                                <br>
+                                <a href="{{ url_for('assign_mechanic') }}"
+                                   style="display:inline-block; margin-top:10px; color:#2563eb; font-size:12px;">
+                                    Assign mechanic →
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% else %}
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <h3>No service requests found</h3>
+                                <p>Customer service requests will appear here.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="footer">
+            © 2026 VehicleCare. Admin Panel.
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>
+

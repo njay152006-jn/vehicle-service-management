@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mechanics - VehicleCare</title>
+</head>
+
+<body>
+
+    <h1>Mechanics</h1>
+
+    {% if mechanics %}
+
+        {% for mechanic in mechanics %}
+
+            <div>
+
+                <h3>{{ mechanic[1] }}</h3>
+
+                <p>
+                    Specialization: {{ mechanic[2] }}
+                </p>
+
+                <p>
+                    Phone: {{ mechanic[3] }}
+                </p>
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No mechanics added yet.</p>
+
+    {% endif %}
+
+    <br>
+
+    <a href="/add_mechanic">
+        <button>Add Another Mechanic</button>
+    </a>
+
+    <br><br>
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+</body>
+
+</html>

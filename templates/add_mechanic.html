@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Mechanic - VehicleCare</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Add Mechanic</h1>
+
+    <form method="POST">
+
+        <label>Mechanic Name</label>
+
+        <input
+            type="text"
+            name="name"
+            required
+        >
+
+        <label>Specialization</label>
+
+        <input
+            type="text"
+            name="specialization"
+            placeholder="Example: Engine, Brakes, Electrical"
+        >
+
+        <label>Phone</label>
+
+        <input
+            type="tel"
+            name="phone"
+            maxlength="15"
+        >
+
+        <button type="submit">
+            Add Mechanic
+        </button>
+
+    </form>
+
+    <a href="/admin_mechanics" class="back">
+        ← Back to Mechanic Management
+    </a>
+
+</div>
+
+</body>
+
+</html>

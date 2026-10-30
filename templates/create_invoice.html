@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Invoice | VehicleCare</title>
+
+```
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f7fb;
+        color: #1e293b;
+    }
+
+    .layout {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background: #111c36;
+        color: white;
+        padding: 28px 18px;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+    }
+
+    .brand {
+        font-size: 25px;
+        font-weight: bold;
+        margin: 0 0 8px 10px;
+    }
+
+    .brand span {
+        color: #38bdf8;
+    }
+
+    .subtitle {
+        color: #9caac4;
+        font-size: 12px;
+        margin: 0 0 35px 10px;
+    }
+
+    .nav-title {
+        color: #8190ad;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        margin: 0 0 12px 10px;
+    }
+
+    .nav-link {
+        display: block;
+        color: #cbd5e1;
+        text-decoration: none;
+        padding: 13px 14px;
+        margin-bottom: 7px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: #243657;
+        color: white;
+    }
+
+    .nav-link.active {
+        border-left: 3px solid #38bdf8;
+    }
+
+    .sidebar-bottom {
+        margin-top: auto;
+        padding-top: 25px;
+    }
+
+    /* Main content */
+    .main {
+        flex: 1;
+        min-width: 0;
+        padding: 30px;
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+        font-size: 27px;
+        color: #172554;
+    }
+
+    .topbar p {
+        color: #64748b;
+        margin-top: 7px;
+        font-size: 14px;
+    }
+
+    .admin-badge {
+        background: white;
+        border: 1px solid #e2e8f0;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .breadcrumb {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 22px;
+    }
+
+    .breadcrumb a {
+        color: #2563eb;
+        text-decoration: none;
+    }
+
+    /* Form card */
+    .form-card {
+        max-width: 780px;
+        background: white;
+        border: 1px solid #e5eaf2;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .card-header {
+        padding: 25px 30px;
+        border-bottom: 1px solid #edf1f7;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        background: #e0f2fe;
+        color: #0369a1;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+    }
+
+    .card-header h2 {
+        font-size: 20px;
+        color: #172554;
+        margin-bottom: 6px;
+    }
+
+    .card-header p {
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .form-body {
+        padding: 30px;
+    }
+
+    .info-box {
+        padding: 14px 16px;
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        color: #1e40af;
+        border-radius: 9px;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 23px;
+    }
+
+    label {
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        color: #334155;
+        margin-bottom: 9px;
+    }
+
+    .required {
+        color: #dc2626;
+    }
+
+    input,
+    select {
+        display: block;
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 9px;
+        background: #fff;
+        color: #1e293b;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .help-text {
+        display: block;
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 7px;
+    }
+
+    .cost-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #edf1f7;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 13px 20px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-primary {
+        background: #2563eb;
+        color: white;
+        flex: 1;
+    }
+
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+        background: #e2e8f0;
+    }
+
+    .footer {
+        margin-top: 30px;
+        color: #94a3b8;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    @media (max-width: 850px) {
+        .sidebar {
+            width: 205px;
+        }
+
+        .main {
+            padding: 22px;
+        }
+    }
+
+    @media (max-width: 650px) {
+        .layout {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            padding: 18px;
+        }
+
+        .brand {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            margin-bottom: 18px;
+        }
+
+        .nav-title {
+            margin-top: 10px;
+        }
+
+        .sidebar-bottom {
+            margin-top: 10px;
+            padding-top: 5px;
+        }
+
+        .main {
+            padding: 18px;
+        }
+
+        .topbar {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .topbar h1 {
+            font-size: 23px;
+        }
+
+        .form-body,
+        .card-header {
+            padding: 22px;
+        }
+
+        .cost-grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+<div class="layout">
+
+```
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="brand">Vehicle<span>Care</span></div>
+    <div class="subtitle">VEHICLE SERVICE MANAGEMENT</div>
+
+    <div class="nav-title">MAIN MENU</div>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+        ▦ &nbsp; Dashboard
+    </a>
+
+    <a href="{{ url_for('admin_services') }}" class="nav-link">
+        🔧 &nbsp; Service Requests
+    </a>
+
+    <a href="{{ url_for('mechanics') }}" class="nav-link">
+        👨‍🔧 &nbsp; Mechanics
+    </a>
+
+    <a href="{{ url_for('assign_mechanic') }}" class="nav-link">
+        ⇄ &nbsp; Assign Mechanic
+    </a>
+
+    <a href="{{ url_for('admin_invoices') }}" class="nav-link">
+        ▤ &nbsp; Invoices
+    </a>
+
+    <a href="{{ url_for('create_invoice') }}" class="nav-link active">
+        ＋ &nbsp; Create Invoice
+    </a>
+
+    <div class="sidebar-bottom">
+        <a href="{{ url_for('home') }}" class="nav-link">
+            ⌂ &nbsp; View Website
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            ⇥ &nbsp; Logout
+        </a>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+
+    <div class="topbar">
+        <div>
+            <h1>Create Invoice</h1>
+            <p>Generate a bill for a vehicle service request.</p>
+        </div>
+
+        <div class="admin-badge">⚙ Administrator</div>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        &nbsp; / &nbsp;
+        <a href="{{ url_for('admin_invoices') }}">Invoices</a>
+        &nbsp; / &nbsp;
+        Create Invoice
+    </div>
+
+    <section class="form-card">
+
+        <div class="card-header">
+            <div class="icon-box">▤</div>
+            <div>
+                <h2>Invoice Details</h2>
+                <p>Enter the service and cost details below.</p>
+            </div>
+        </div>
+
+        <div class="form-body">
+
+            <div class="info-box">
+                <strong>Before generating:</strong>
+                Select the correct service request and enter its labour and parts costs.
+                The total amount will be calculated by the server.
+            </div>
+
+            <form method="POST" action="{{ url_for('create_invoice') }}">
+
+                <div class="form-group">
+                    <label for="service_id">
+                        Select Service <span class="required">*</span>
+                    </label>
+
+                    <select name="service_id" id="service_id" required>
+                        <option value="">-- Select a Service --</option>
+
+                        {% for service in services %}
+                        <option value="{{ service.id }}">
+                            Service #{{ service.id }} —
+                            {{ service.vehicle_number }} —
+                            {{ service.service_type }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <span class="help-text">
+                        Choose the service request for which you are generating the invoice.
+                    </span>
+                </div>
+
+                <div class="cost-grid">
+
+                    <div class="form-group">
+                        <label for="labour_cost">
+                            Labour Cost (₹) <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="labour_cost"
+                            name="labour_cost"
+                            min="0"
+                            step="0.01"
+                            placeholder="e.g. 500.00"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Cost of labour and servicing.
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parts_cost">
+                            Parts Cost (₹) <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="parts_cost"
+                            name="parts_cost"
+                            min="0"
+                            step="0.01"
+                            placeholder="e.g. 1200.00"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Total cost of replacement parts.
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                        ← Back to Dashboard
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        Generate Invoice &nbsp; →
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+    <div class="footer">
+        © 2026 VehicleCare · Vehicle Service Management System
+    </div>
+
+</main>
+```
+
+</div>
+</body>
+</html>

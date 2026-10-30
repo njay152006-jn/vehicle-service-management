@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | VehicleCare</title>
+
+
+<style>
+    :root {
+        --navy: #0b252b;
+        --navy-light: #123a42;
+        --teal: #24c8ad;
+        --teal-hover: #58ddc6;
+        --text: #183239;
+        --muted: #718187;
+        --border: #dce6e8;
+        --background: #f3f7f8;
+        --white: #ffffff;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: var(--background);
+        display: flex;
+        flex-direction: column;
+        color: var(--text);
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .navbar {
+        height: 76px;
+        padding: 0 7%;
+        background: var(--white);
+        border-bottom: 1px solid #e6edef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        color: var(--navy);
+        font-size: 27px;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    .logo span {
+        color: #13aa91;
+    }
+
+    .home-link {
+        color: #50666d;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .home-link:hover {
+        color: #13aa91;
+    }
+
+    .page-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 6%;
+        background:
+            radial-gradient(
+                circle at 10% 10%,
+                rgba(36, 200, 173, 0.10),
+                transparent 30%
+            ),
+            var(--background);
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 1000px;
+        min-height: 570px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--white);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 22px 65px rgba(11, 37, 43, 0.10);
+    }
+
+    .welcome-panel {
+        background:
+            radial-gradient(
+                circle at 90% 10%,
+                rgba(36, 200, 173, 0.18),
+                transparent 34%
+            ),
+            linear-gradient(145deg, var(--navy), var(--navy-light));
+        color: var(--white);
+        padding: 55px 45px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .welcome-icon {
+        width: 75px;
+        height: 75px;
+        border-radius: 20px;
+        background: rgba(36, 200, 173, 0.14);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 39px;
+        margin-bottom: 30px;
+    }
+
+    .welcome-panel h1 {
+        font-size: 38px;
+        line-height: 1.2;
+        letter-spacing: -1px;
+        margin-bottom: 20px;
+    }
+
+    .welcome-panel h1 span {
+        color: var(--teal-hover);
+    }
+
+    .welcome-panel > p {
+        color: #c3d4d7;
+        font-size: 15px;
+        line-height: 1.9;
+        margin-bottom: 32px;
+    }
+
+    .benefit {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 12px 0;
+        color: #e3eeee;
+        font-size: 14px;
+    }
+
+    .check {
+        color: var(--teal-hover);
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .form-panel {
+        padding: 55px 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .form-label {
+        color: #13aa91;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 12px;
+    }
+
+    .form-panel h2 {
+        font-size: 31px;
+        color: var(--navy);
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 21px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        color: #304b52;
+        margin-bottom: 9px;
+    }
+
+    .form-group input {
+        width: 100%;
+        height: 49px;
+        padding: 0 14px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        outline: none;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--text);
+        background: #fbfdfd;
+        transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(36, 200, 173, 0.12);
+    }
+
+    .password-wrapper {
+        position: relative;
+    }
+
+    .password-wrapper input {
+        padding-right: 68px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        color: #168e7c;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px;
+    }
+
+    .login-button {
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 9px;
+        background: var(--teal);
+        color: var(--navy);
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+        margin-top: 5px;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .login-button:hover {
+        background: var(--teal-hover);
+        transform: translateY(-1px);
+    }
+
+    .register-text {
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 25px;
+    }
+
+    .register-text a {
+        color: #109b85;
+        font-weight: 800;
+    }
+
+    .register-text a:hover {
+        text-decoration: underline;
+    }
+
+    .back-home {
+        text-align: center;
+        margin-top: 24px;
+    }
+
+    .back-home a {
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    .back-home a:hover {
+        color: #109b85;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+        .navbar {
+            padding: 0 6%;
+        }
+
+        .page-content {
+            padding: 30px 5%;
+        }
+
+        .login-container {
+            max-width: 480px;
+            grid-template-columns: 1fr;
+        }
+
+        .welcome-panel {
+            padding: 32px;
+        }
+
+        .welcome-panel h1 {
+            font-size: 30px;
+        }
+
+        .welcome-panel > p {
+            margin-bottom: 15px;
+        }
+
+        .welcome-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .form-panel {
+            padding: 35px 28px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<header class="navbar">
+    <a href="/" class="logo">Vehicle<span>Care</span></a>
+    <a href="/" class="home-link">← Back to Home</a>
+</header>
+
+<main class="page-content">
+
+    <div class="login-container">
+
+        <!-- Welcome Panel -->
+        <section class="welcome-panel">
+            <div class="welcome-icon">🚘</div>
+
+            <h1>Welcome back to <span>VehicleCare.</span></h1>
+
+            <p>
+                Your vehicle services, repair updates, and invoices
+                are all organized in one place. Sign in to continue.
+            </p>
+
+            <div class="benefit">
+                <span class="check">✓</span>
+                Manage your registered vehicles
+            </div>
+
+            <div class="benefit">
+                <span class="check">✓</span>
+                Track your service requests
+            </div>
+
+            <div class="benefit">
+                <span class="check">✓</span>
+                Access your invoices
+            </div>
+        </section>
+
+        <!-- Login Form -->
+        <section class="form-panel">
+            <div class="form-label">Your account</div>
+
+            <h2>Sign in</h2>
+
+            <p class="subtitle">
+                Enter your email and password to access your account.
+            </p>
+
+            <form method="POST" action="/login">
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Sign In →
+                </button>
+
+            </form>
+
+            <p class="register-text">
+                Don't have an account?
+                <a href="/register">Create an account</a>
+            </p>
+
+            <div class="back-home">
+                <a href="/">Return to VehicleCare Home</a>
+            </div>
+        </section>
+
+    </div>
+
+</main>
+
+<footer>
+    © 2026 VehicleCare · Vehicle Service Management System
+</footer>
+
+<script>
+    const passwordInput = document.getElementById("password");
+    const toggleButton = document.getElementById("togglePassword");
+
+    toggleButton.addEventListener("click", function () {
+        const showingPassword = passwordInput.type === "text";
+
+        passwordInput.type = showingPassword ? "password" : "text";
+        toggleButton.textContent = showingPassword ? "Show" : "Hide";
+
+        toggleButton.setAttribute(
+            "aria-label",
+            showingPassword ? "Show password" : "Hide password"
+        );
+    });
+</script>
+
+
+</body>
+</html>

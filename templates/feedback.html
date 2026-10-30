@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VehicleCare - Feedback</title>
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f1f5f9;
+        color: #1e293b;
+    }
+
+    nav {
+        background: #0f172a;
+        color: white;
+        padding: 20px 8%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav h2 {
+        margin: 0;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 0;
+        color: #0f172a;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 30px;
+    }
+
+    label {
+        display: block;
+        margin: 18px 0 8px;
+        font-weight: bold;
+    }
+
+    select, textarea {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    textarea {
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 22px;
+        padding: 14px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1d4ed8;
+    }
+
+    .message {
+        padding: 12px;
+        border-radius: 8px;
+        background: #dcfce7;
+        color: #166534;
+        margin-bottom: 18px;
+    }
+
+    @media (max-width: 650px) {
+        .container {
+            margin: 25px 15px;
+            padding: 22px;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+<nav>
+    <h2>VehicleCare</h2>
+    <a href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+</nav>
+
+<div class="container">
+    <h1>Share Your Feedback</h1>
+
+
+<p class="subtitle">
+    Help us improve your vehicle service experience.
+</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="message">{{ message }}</div>
+    {% endfor %}
+{% endwith %}
+
+<form method="POST" action="{{ url_for('feedback') }}">
+
+    <label for="rating">Rate Your Experience</label>
+
+    <select id="rating" name="rating" required>
+        <option value="">Select a rating</option>
+        <option value="5">5 - Excellent</option>
+        <option value="4">4 - Very Good</option>
+        <option value="3">3 - Good</option>
+        <option value="2">2 - Fair</option>
+        <option value="1">1 - Poor</option>
+    </select>
+
+    <label for="comments">Your Comments</label>
+
+    <textarea
+        id="comments"
+        name="comments"
+        placeholder="Tell us about your experience..."
+        maxlength="2000"
+        required></textarea>
+
+    <button type="submit">Submit Feedback</button>
+
+</form>
+
+
+</div>
+
+</body>
+</html>

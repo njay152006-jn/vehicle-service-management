@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Mechanic | VehicleCare</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 245px;
+            background: #111827;
+            color: white;
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            padding: 0 10px 35px;
+        }
+
+        .brand span {
+            color: #38bdf8;
+        }
+
+        .menu-label {
+            color: #94a3b8;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            padding: 0 12px;
+            margin-bottom: 14px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #263449;
+            color: #38bdf8;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 25px;
+        }
+
+        .logout {
+            color: #fca5a5;
+        }
+
+        /* Main area */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 32px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2563eb;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 9px;
+            border: 1px solid #dbeafe;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #eff6ff;
+        }
+
+        /* Content */
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.8fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .form-card,
+        .info-card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px #0f172a08;
+        }
+
+        .card-heading {
+            padding: 24px;
+            border-bottom: 1px solid #eef2f7;
+        }
+
+        .heading-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 12px;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .card-heading h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .card-heading p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .form-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 9px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        select,
+        input[type="date"] {
+            width: 100%;
+            min-height: 47px;
+            padding: 12px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: #fff;
+            color: #334155;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        select:focus,
+        input[type="date"]:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #2563eb18;
+        }
+
+        .help-text {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 7px;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            border-radius: 9px;
+            padding: 14px 18px;
+            background: #2563eb;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Information panel */
+        .info-card {
+            padding: 24px;
+        }
+
+        .info-card h2 {
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            background: #f1f5f9;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+
+        .info-item h3 {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .info-item p {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #64748b;
+        }
+
+        .notice {
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            padding: 14px;
+            color: #1e40af;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 28px 0 5px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 1000px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .brand {
+                padding: 0 8px 18px;
+            }
+
+            .menu-label {
+                display: none;
+            }
+
+            .sidebar-bottom {
+                margin-top: 10px;
+                padding-top: 0;
+            }
+
+            .main {
+                padding: 22px 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .form-body,
+            .card-heading {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">Vehicle<span>Care</span></div>
+
+        <div class="menu-label">ADMIN MENU</div>
+
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+                ▦ &nbsp; Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_services') }}" class="nav-link">
+                🔧 &nbsp; Manage Services
+            </a>
+
+            <a href="{{ url_for('mechanics') }}" class="nav-link">
+                🧑‍🔧 &nbsp; Manage Mechanics
+            </a>
+
+            <a href="{{ url_for('assign_mechanic') }}" class="nav-link active">
+                👨‍🔧 &nbsp; Assign Mechanic
+            </a>
+
+            <a href="{{ url_for('admin_invoices') }}" class="nav-link">
+                🧾 &nbsp; Manage Invoices
+            </a>
+
+            <a href="{{ url_for('create_invoice') }}" class="nav-link">
+                ＋ &nbsp; Create Invoice
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="{{ url_for('home') }}" class="nav-link">
+                ⌂ &nbsp; View Website
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="nav-link logout">
+                ↪ &nbsp; Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Assign Mechanic</h1>
+                <p class="subtitle">
+                    Match service requests with the right workshop mechanic.
+                </p>
+            </div>
+
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+                ← Dashboard
+            </a>
+        </header>
+
+        <div class="content-grid">
+
+            <!-- Assignment form -->
+            <section class="form-card">
+
+                <div class="card-heading">
+                    <div class="heading-icon">👨‍🔧</div>
+                    <h2>New Mechanic Assignment</h2>
+                    <p>
+                        Select a service, choose a mechanic, and set the assignment date.
+                    </p>
+                </div>
+
+                <form method="POST"
+                      action="{{ url_for('assign_mechanic') }}"
+                      class="form-body">
+
+                    <div class="form-group">
+                        <label for="service_id">
+                            Select Service <span class="required">*</span>
+                        </label>
+
+                        <select name="service_id" id="service_id" required>
+                            <option value="">-- Choose a service request --</option>
+
+                            {% for service in services %}
+                            <option value="{{ service[0] }}">
+                                {{ service[1] }} - {{ service[2] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+
+                        <p class="help-text">
+                            Choose the service request that needs a mechanic.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mechanic_id">
+                            Select Mechanic <span class="required">*</span>
+                        </label>
+
+                        <select name="mechanic_id" id="mechanic_id" required>
+                            <option value="">-- Choose a mechanic --</option>
+
+                            {% for mechanic in mechanics %}
+                            <option value="{{ mechanic[0] }}">
+                                {{ mechanic[1] }} - {{ mechanic[2] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+
+                        <p class="help-text">
+                            Mechanic names and specializations are shown above.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assigned_date">
+                            Assignment Date <span class="required">*</span>
+                        </label>
+
+                        <input type="date"
+                               name="assigned_date"
+                               id="assigned_date"
+                               required>
+
+                        <p class="help-text">
+                            Select the date the mechanic is assigned to the service.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        ✓ &nbsp; Assign Mechanic
+                    </button>
+
+                </form>
+            </section>
+
+            <!-- Guidance panel -->
+            <aside class="info-card">
+                <h2>Assignment Guide</h2>
+
+                <div class="info-item">
+                    <div class="info-icon">🚘</div>
+                    <div>
+                        <h3>1. Choose a Service</h3>
+                        <p>Select the correct customer service request from the dropdown.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">🧑‍🔧</div>
+                    <div>
+                        <h3>2. Match the Mechanic</h3>
+                        <p>Review the mechanic's specialization before making an assignment.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📅</div>
+                    <div>
+                        <h3>3. Set the Date</h3>
+                        <p>Enter the date associated with the mechanic assignment.</p>
+                    </div>
+                </div>
+
+                <div class="notice">
+                    <strong>Note:</strong> Submit the form once the service, mechanic, and date are correct.
+                </div>
+            </aside>
+
+        </div>
+
+        <footer class="footer">
+            © 2026 VehicleCare. Admin Panel.
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>
+

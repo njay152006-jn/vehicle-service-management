@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | VehicleCare</title>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary: #2563eb;
+        --primary-light: #eff6ff;
+        --dark: #172033;
+        --muted: #718096;
+        --background: #f5f7fb;
+        --white: #ffffff;
+        --border: #e8edf4;
+        --green: #15803d;
+        --orange: #c2410c;
+        --red: #b91c1c;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--background);
+        color: var(--dark);
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    button, a {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .layout {
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 245px;
+        background: #111c35;
+        color: white;
+        padding: 28px 18px;
+        display: flex;
+        flex-direction: column;
+        z-index: 10;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 10px 34px;
+    }
+
+    .brand-icon {
+        width: 43px;
+        height: 43px;
+        display: grid;
+        place-items: center;
+        background: var(--primary);
+        border-radius: 13px;
+        font-size: 23px;
+    }
+
+    .brand h2 {
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .brand span {
+        color: #7da9ff;
+    }
+
+    .nav-label {
+        padding: 0 12px;
+        margin-bottom: 12px;
+        color: #8d9ab4;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.6px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 13px 14px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+        color: #bdc8dc;
+        font-size: 13px;
+        font-weight: 500;
+        transition: .2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        color: white;
+        background: #263a62;
+    }
+
+    .nav-link.active {
+        border-left: 3px solid #60a5fa;
+    }
+
+    .nav-icon {
+        width: 22px;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    .sidebar-bottom {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid #293650;
+    }
+
+    .support-card {
+        background: #1c2b49;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 18px;
+    }
+
+    .support-card p {
+        color: #b7c4dc;
+        font-size: 11px;
+        line-height: 1.7;
+        margin: 8px 0 12px;
+    }
+
+    .support-card a {
+        color: #93bbff;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .logout {
+        color: #ffb4b4;
+    }
+
+    .main {
+        margin-left: 245px;
+        padding: 30px 36px 45px;
+        max-width: 1800px;
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    .eyebrow {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .topbar h1 {
+        font-size: clamp(23px, 3vw, 30px);
+        letter-spacing: -1px;
+    }
+
+    .topbar p {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 9px;
+    }
+
+    .profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        padding: 10px 15px;
+    }
+
+    .avatar {
+        height: 40px;
+        width: 40px;
+        border-radius: 12px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 17px;
+    }
+
+    .profile strong {
+        display: block;
+        font-size: 12px;
+    }
+
+    .profile small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-top: 4px;
+    }
+
+    .welcome-banner {
+        background: linear-gradient(115deg, #1d4ed8, #3478f6 65%, #5b9cff);
+        color: white;
+        border-radius: 19px;
+        padding: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 26px;
+    }
+
+    .welcome-banner::after {
+        content: "🚘";
+        position: absolute;
+        right: 30%;
+        top: -28px;
+        font-size: 115px;
+        opacity: .12;
+        transform: rotate(-10deg);
+        pointer-events: none;
+    }
+
+    .welcome-banner > div {
+        position: relative;
+        z-index: 1;
+    }
+
+    .welcome-banner .tag {
+        font-size: 10px;
+        letter-spacing: 1.4px;
+        font-weight: 700;
+        color: #dbeafe;
+        text-transform: uppercase;
+    }
+
+    .welcome-banner h2 {
+        font-size: 25px;
+        margin: 12px 0 9px;
+    }
+
+    .welcome-banner p {
+        color: #e0ecff;
+        font-size: 12px;
+        line-height: 1.8;
+        max-width: 460px;
+    }
+
+    .btn {
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: inherit;
+        transition: .2s;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-white {
+        background: white;
+        color: #1d4ed8;
+        white-space: nowrap;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-light {
+        background: var(--primary-light);
+        color: var(--primary);
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        padding: 21px;
+        min-width: 0;
+    }
+
+    .stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .stat-icon {
+        height: 42px;
+        width: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        font-size: 20px;
+    }
+
+    .blue { background: #eaf2ff; }
+    .green { background: #e7f8ed; }
+    .orange { background: #fff1df; }
+    .purple { background: #f0eaff; }
+
+    .stat-card h3 {
+        font-size: 29px;
+        margin: 19px 0 6px;
+    }
+
+    .stat-card p {
+        font-size: 11px;
+        color: var(--muted);
+    }
+
+    .section {
+        margin-bottom: 30px;
+        scroll-margin-top: 20px;
+    }
+
+    .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 17px;
+    }
+
+    .section-heading h2 {
+        font-size: 18px;
+        letter-spacing: -.4px;
+    }
+
+    .section-heading p {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 6px;
+    }
+
+    .text-link {
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .vehicle-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .vehicle-card, .panel {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        padding: 22px;
+        min-width: 0;
+    }
+
+    .vehicle-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .vehicle-symbol {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        background: #eef4ff;
+        font-size: 25px;
+    }
+
+    .vehicle-card h3 {
+        font-size: 16px;
+        margin: 16px 0 7px;
+    }
+
+    .vehicle-number {
+        display: inline-block;
+        padding: 7px 10px;
+        background: #f2f5fa;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .4px;
+    }
+
+    .vehicle-info {
+        border-top: 1px solid var(--border);
+        margin-top: 17px;
+        padding-top: 16px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .vehicle-info small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-bottom: 6px;
+    }
+
+    .vehicle-info strong {
+        font-size: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(270px, 1fr);
+        gap: 20px;
+        align-items: start;
+    }
+
+    .service-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .service-item {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 17px;
+    }
+
+    .service-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .service-item h3 {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .service-item p {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 7px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+        background: #eff6ff;
+        color: #1d4ed8;
+        white-space: nowrap;
+    }
+
+    .status-completed, .status-paid {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status-pending, .status-requested {
+        background: #fff1dc;
+        color: #9a3412;
+    }
+
+    .status-in-progress, .status-assigned {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .mechanic-box {
+        background: #f7f9fd;
+        padding: 12px;
+        border-radius: 9px;
+        margin-top: 13px;
+    }
+
+    .mechanic-box strong {
+        color: var(--dark);
+    }
+
+    .invoice-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .invoice-item:last-child {
+        border-bottom: none;
+    }
+
+    .invoice-item h3 {
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+
+    .invoice-item p {
+        font-size: 10px;
+        line-height: 1.8;
+        color: var(--muted);
+    }
+
+    .invoice-amount {
+        text-align: right;
+        flex-shrink: 0;
+    }
+
+    .invoice-amount strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .empty {
+        padding: 32px 15px;
+        text-align: center;
+        background: #fafbfe;
+        border: 1px dashed #d9e1ed;
+        border-radius: 12px;
+    }
+
+    .empty .empty-icon {
+        font-size: 30px;
+        margin-bottom: 12px;
+    }
+
+    .empty h3 {
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .empty p {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+
+    .footer {
+        text-align: center;
+        color: var(--muted);
+        font-size: 10px;
+        padding: 15px 0;
+    }
+
+    @media (max-width: 1100px) {
+        .main {
+            padding: 25px 22px;
+        }
+
+        .stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .sidebar {
+            position: static;
+            width: 100%;
+            padding: 15px;
+        }
+
+        .brand {
+            padding: 0 5px 15px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 7px;
+        }
+
+        .nav-label, .sidebar-bottom, .nav-link span:not(.nav-icon) {
+            display: none;
+        }
+
+        .nav-link {
+            flex-shrink: 0;
+            margin: 0;
+            padding: 11px 13px;
+        }
+
+        .main {
+            margin-left: 0;
+            padding: 22px 15px;
+        }
+
+        .topbar {
+            align-items: flex-start;
+        }
+
+        .profile {
+            padding: 7px;
+        }
+
+        .profile > div:last-child {
+            display: none;
+        }
+
+        .welcome-banner {
+            padding: 23px;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .welcome-banner::after {
+            right: 0;
+            top: 20px;
+            font-size: 75px;
+        }
+
+        .welcome-banner h2 {
+            font-size: 21px;
+        }
+
+        .stats {
+            gap: 10px;
+        }
+
+        .stat-card {
+            padding: 15px;
+        }
+
+        .stat-card h3 {
+            font-size: 24px;
+        }
+
+        .stat-icon {
+            height: 35px;
+            width: 35px;
+            font-size: 17px;
+        }
+
+        .vehicle-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-heading h2 {
+            font-size: 16px;
+        }
+
+        .vehicle-card, .panel {
+            padding: 17px;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        .topbar h1 {
+            font-size: 21px;
+        }
+
+        .service-top {
+            flex-direction: column;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+<div class="layout">
+
+
+<aside class="sidebar">
+    <a href="/dashboard" class="brand">
+        <div class="brand-icon">🚘</div>
+        <h2>Vehicle<span>Care</span></h2>
+    </a>
+
+    <div class="nav-label">MAIN MENU</div>
+
+    <nav>
+        <a href="#overview" class="nav-link active">
+            <span class="nav-icon">▦</span><span>Dashboard</span>
+        </a>
+        <a href="#vehicles" class="nav-link">
+            <span class="nav-icon">🚗</span><span>My Vehicles</span>
+        </a>
+        <a href="/book_service" class="nav-link">
+            <span class="nav-icon">🔧</span><span>Book a Service</span>
+        </a>
+        <a href="#services" class="nav-link">
+            <span class="nav-icon">📋</span><span>Service History</span>
+        </a>
+        <a href="#invoices" class="nav-link">
+            <span class="nav-icon">🧾</span><span>My Invoices</span>
+        </a>
+        <a href="{{ url_for('feedback') }}" class="nav-link">
+    <span class="nav-icon">⭐</span>
+    <span>Share Feedback</span>
+</a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+        <div class="support-card">
+            <strong>Need assistance?</strong>
+            <p>Have a question about your vehicle service?</p>
+            <a href="#services">View service updates →</a>
+        </div>
+
+        <a href="/logout" class="nav-link logout">
+            <span class="nav-icon">↪</span><span>Logout</span>
+        </a>
+    </div>
+</aside>
+
+<main class="main">
+
+    <header class="topbar" id="overview">
+        <div>
+            <div class="eyebrow">CUSTOMER PORTAL</div>
+            <h1>Dashboard Overview</h1>
+            <p>Manage your vehicles, services and invoices in one place.</p>
+        </div>
+
+        <div class="profile">
+            <div class="avatar">
+                {{ (session.get("user_name") or "U")[0]|upper }}
+            </div>
+            <div>
+                <strong>{{ session.get("user_name", "Customer") }}</strong>
+                <small>VehicleCare Customer</small>
+            </div>
+        </div>
+    </header>
+
+    <section class="welcome-banner">
+        <div>
+            <div class="tag">YOUR VEHICLE, OUR PRIORITY</div>
+            <h2>Hello, {{ session.get("user_name", "Customer") }}! 👋</h2>
+            <p>Welcome to VehicleCare. Keep track of your vehicle health, book services and monitor your service progress easily.</p>
+        </div>
+
+        <a href="/book_service" class="btn btn-white">＋ Book a Service</a>
+    </section>
+
+    <section class="stats">
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon blue">🚗</span>
+                <span class="text-link">Vehicles</span>
+            </div>
+            <h3>{{ vehicles|length }}</h3>
+            <p>Registered vehicles</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon purple">📋</span>
+                <span class="text-link">Services</span>
+            </div>
+            <h3>{{ services|length }}</h3>
+            <p>Total service requests</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon green">✓</span>
+                <span class="text-link">Completed</span>
+            </div>
+            <h3>{{ services|selectattr('5', 'equalto', 'Completed')|list|length }}</h3>
+            <p>Completed services</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-icon orange">🧾</span>
+                <span class="text-link">Invoices</span>
+            </div>
+            <h3>{{ invoices|length }}</h3>
+            <p>Invoices generated</p>
+        </div>
+    </section>
+
+    <section class="section" id="vehicles">
+        <div class="section-heading">
+            <div>
+                <h2>🚗 My Vehicles</h2>
+                <p>Your registered vehicles at a glance.</p>
+            </div>
+            <a href="/add_vehicle" class="btn btn-primary">＋ Add Vehicle</a>
+        </div>
+
+        {% if vehicles %}
+            <div class="vehicle-grid">
+                {% for vehicle in vehicles %}
+                    <article class="vehicle-card">
+                        <div class="vehicle-top">
+                            <div class="vehicle-symbol">🚘</div>
+                            <span class="status status-assigned">Registered</span>
+                        </div>
+
+                        <h3>{{ vehicle[2] }}</h3>
+                        <span class="vehicle-number">{{ vehicle[3] }} {{ vehicle[4] }}</span>
+
+                        <div class="vehicle-info">
+                            <div>
+                                <small>Manufacturing Year</small>
+                                <strong>{{ vehicle[5] }}</strong>
+                            </div>
+                            <div>
+                                <small>Fuel Type</small>
+                                <strong>{{ vehicle[6] }}</strong>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty">
+                <div class="empty-icon">🚗</div>
+                <h3>No vehicles registered yet</h3>
+                <p>Add your vehicle to start booking and tracking services.</p>
+                <a href="/add_vehicle" class="btn btn-primary">＋ Add Your First Vehicle</a>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="section">
+        <div class="section-heading">
+            <div>
+                <h2>⚡ Quick Actions</h2>
+                <p>Get things done in a few clicks.</p>
+            </div>
+        </div>
+
+        <div class="vehicle-grid">
+            <div class="panel">
+                <div class="vehicle-top">
+                    <div>
+                        <h3 style="font-size:15px; margin-bottom:9px;">Book Vehicle Service</h3>
+                        <p style="font-size:11px; color:var(--muted); line-height:1.7;">Request maintenance or repair for your vehicle.</p>
+                    </div>
+                    <div class="vehicle-symbol">🔧</div>
+                </div>
+                <br>
+                <a href="/book_service" class="btn btn-primary">Book Service →</a>
+            </div>
+
+            <div class="panel">
+                <div class="vehicle-top">
+                    <div>
+                        <h3 style="font-size:15px; margin-bottom:9px;">Register a Vehicle</h3>
+                        <p style="font-size:11px; color:var(--muted); line-height:1.7;">Add another vehicle to your account.</p>
+                    </div>
+                    <div class="vehicle-symbol">🚙</div>
+                </div>
+                <br>
+                <a href="/add_vehicle" class="btn btn-light">Add Vehicle →</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="content-grid">
+
+        <section class="section" id="services">
+            <div class="section-heading">
+                <div>
+                    <h2>📋 My Service Requests</h2>
+                    <p>Track service status and mechanic assignments.</p>
+                </div>
+            </div>
+
+            {% if services %}
+                <div class="service-list">
+                    {% for service in services %}
+                        <article class="service-item">
+                            <div class="service-top">
+                                <div>
+                                    <h3>{{ service[2] }}</h3>
+                                    <p>Vehicle: {{ service[1] }}</p>
+                                </div>
+
+                                <span class="status
+                                    {% if service[5]|lower == 'completed' %}status-completed
+                                    {% elif service[5]|lower == 'pending' or service[5]|lower == 'requested' %}status-pending
+                                    {% elif service[5]|lower == 'assigned' or service[5]|lower == 'in progress' %}status-in-progress
+                                    {% endif %}">
+                                    {{ service[5] }}
+                                </span>
+                            </div>
+
+                            <p style="margin-top:10px;">Description: {{ service[3] or 'No description provided' }}</p>
+                            <p>Service Date: {{ service[4] }}</p>
+
+                            <div class="mechanic-box">
+                                <p>👨‍🔧 Assigned Mechanic:
+                                    <strong>{{ service[6] or 'Not assigned yet' }}</strong>
+                                </p>
+                                {% if service[7] %}
+                                    <p>Specialization: <strong>{{ service[7] }}</strong></p>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty">
+                    <div class="empty-icon">🔧</div>
+                    <h3>No service requests yet</h3>
+                    <p>Your service bookings and their progress will appear here.</p>
+                    <a href="/book_service" class="btn btn-primary">Book Your First Service</a>
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="section" id="invoices">
+            <div class="section-heading">
+                <div>
+                    <h2>🧾 My Invoices</h2>
+                    <p>Review your service charges.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                {% if invoices %}
+                    {% for invoice in invoices %}
+                        <div class="invoice-item">
+                            <div>
+                                <h3>Invoice #{{ invoice[0] }}</h3>
+                                <p>Service ID: {{ invoice[1] }}</p>
+                                <p>Invoice Date: {{ invoice[5] }}</p>
+                                <p>Labour: ₹{{ invoice[2] }}</p>
+                                <p>Parts: ₹{{ invoice[3] }}</p>
+                            </div>
+
+                            <div class="invoice-amount">
+                                <strong>₹{{ invoice[4] }}</strong>
+                                {% if invoice|length > 6 and invoice[6] %}
+                                    <span class="status
+                                        {% if invoice[6]|lower == 'paid' %}status-paid
+                                        {% else %}status-pending{% endif %}">
+                                        {{ invoice[6] }}
+                                    </span>
+                                {% else %}
+                                    <span class="status">Generated</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty">
+                        <div class="empty-icon">🧾</div>
+                        <h3>No invoices yet</h3>
+                        <p>Invoices will appear here when the admin generates one for your service.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        © 2026 VehicleCare · Your vehicle, our priority.
+    </footer>
+
+</main>
+
+
+</div>
+</body>
+</html>

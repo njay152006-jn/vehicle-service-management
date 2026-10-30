@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Service | VehicleCare</title>
+
+```
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f4f7fc;
+        color: #172033;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .sidebar {
+        width: 245px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #111c35;
+        color: white;
+        padding: 28px 18px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 8px 35px;
+    }
+
+    .brand-icon {
+        width: 43px;
+        height: 43px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: #2563eb;
+        font-size: 23px;
+    }
+
+    .brand h2 {
+        color: white;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .brand h2 span {
+        color: #80adff;
+    }
+
+    .nav-label {
+        color: #8d9ab4;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        font-weight: 700;
+        padding: 0 12px;
+        margin-bottom: 13px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 14px;
+        margin-bottom: 6px;
+        color: #bdc8dc;
+        border-radius: 10px;
+        font-size: 13px;
+        transition: .2s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: #263a62;
+        color: white;
+    }
+
+    .nav-link.active {
+        border-left: 3px solid #60a5fa;
+    }
+
+    .nav-icon {
+        width: 22px;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    .sidebar-bottom {
+        margin-top: auto;
+        border-top: 1px solid #293650;
+        padding-top: 18px;
+    }
+
+    .main {
+        margin-left: 245px;
+        padding: 35px;
+        max-width: 1500px;
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .eyebrow {
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 9px;
+    }
+
+    .topbar h1 {
+        font-size: 28px;
+        letter-spacing: -.8px;
+    }
+
+    .topbar p {
+        margin-top: 9px;
+        color: #718096;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .profile {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 14px;
+        border: 1px solid #e5eaf2;
+        background: white;
+        border-radius: 12px;
+    }
+
+    .avatar {
+        width: 39px;
+        height: 39px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-weight: 800;
+    }
+
+    .profile strong {
+        font-size: 12px;
+    }
+
+    .profile small {
+        display: block;
+        margin-top: 4px;
+        color: #718096;
+        font-size: 10px;
+    }
+
+    .banner {
+        background: linear-gradient(115deg, #1d4ed8, #4788fa);
+        border-radius: 17px;
+        padding: 26px 30px;
+        color: white;
+        margin-bottom: 26px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .banner h2 {
+        font-size: 22px;
+        margin-bottom: 9px;
+    }
+
+    .banner p {
+        color: #e1edff;
+        font-size: 12px;
+        line-height: 1.8;
+        max-width: 540px;
+    }
+
+    .banner-icon {
+        font-size: 56px;
+        flex-shrink: 0;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(240px, .8fr);
+        gap: 23px;
+        align-items: start;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #e6ebf3;
+        border-radius: 16px;
+        padding: 27px;
+        box-shadow: 0 5px 20px rgba(26, 48, 85, .025);
+    }
+
+    .card-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid #edf0f5;
+        margin-bottom: 24px;
+    }
+
+    .heading-icon {
+        width: 47px;
+        height: 47px;
+        background: #eaf2ff;
+        border-radius: 13px;
+        display: grid;
+        place-items: center;
+        font-size: 23px;
+    }
+
+    .card-heading h2 {
+        font-size: 17px;
+    }
+
+    .card-heading p {
+        color: #718096;
+        font-size: 11px;
+        margin-top: 6px;
+        line-height: 1.6;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 9px;
+        color: #344054;
+    }
+
+    .required {
+        color: #dc2626;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid #dce3ed;
+        border-radius: 9px;
+        background: #fff;
+        color: #172033;
+        font-family: inherit;
+        font-size: 12px;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+    }
+
+    select {
+        cursor: pointer;
+    }
+
+    textarea {
+        min-height: 125px;
+        resize: vertical;
+        line-height: 1.7;
+    }
+
+    .form-help {
+        display: block;
+        font-size: 10px;
+        color: #8792a5;
+        margin-top: 7px;
+        line-height: 1.6;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 9px;
+        padding: 13px 19px;
+        border-radius: 9px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition: .2s;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        background: #2563eb;
+        color: white;
+        flex: 1;
+    }
+
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #344054;
+    }
+
+    .side-card {
+        background: white;
+        border: 1px solid #e6ebf3;
+        border-radius: 15px;
+        padding: 22px;
+        margin-bottom: 18px;
+    }
+
+    .side-card h3 {
+        font-size: 14px;
+        margin-bottom: 17px;
+    }
+
+    .step {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 19px;
+    }
+
+    .step:last-child {
+        margin-bottom: 0;
+    }
+
+    .step-number {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: #eaf2ff;
+        color: #2563eb;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .step h4 {
+        font-size: 11px;
+        margin: 2px 0 6px;
+    }
+
+    .step p {
+        color: #718096;
+        font-size: 10px;
+        line-height: 1.7;
+    }
+
+    .tip-card {
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .tip-card h3 {
+        font-size: 13px;
+        color: #1d4ed8;
+        margin-bottom: 9px;
+    }
+
+    .tip-card p {
+        font-size: 11px;
+        line-height: 1.8;
+        color: #465c7e;
+    }
+
+    .footer {
+        text-align: center;
+        color: #8994a7;
+        font-size: 10px;
+        margin-top: 35px;
+    }
+
+    @media (max-width: 1000px) {
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .sidebar {
+            position: static;
+            width: 100%;
+            height: auto;
+            padding: 15px;
+        }
+
+        .brand {
+            padding: 0 5px 15px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 5px;
+        }
+
+        .nav-label,
+        .sidebar-bottom,
+        .nav-link span:not(.nav-icon) {
+            display: none;
+        }
+
+        .nav-link {
+            flex-shrink: 0;
+            margin: 0;
+            padding: 11px 13px;
+        }
+
+        .main {
+            margin-left: 0;
+            padding: 22px 15px;
+        }
+
+        .topbar h1 {
+            font-size: 23px;
+        }
+
+        .profile {
+            padding: 7px;
+        }
+
+        .profile > div:last-child {
+            display: none;
+        }
+
+        .banner {
+            padding: 22px;
+        }
+
+        .banner h2 {
+            font-size: 19px;
+        }
+
+        .banner-icon {
+            font-size: 38px;
+        }
+
+        .card {
+            padding: 19px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <a href="/dashboard" class="brand">
+        <div class="brand-icon">🚘</div>
+        <h2>Vehicle<span>Care</span></h2>
+    </a>
+
+```
+<div class="nav-label">MAIN MENU</div>
+
+<nav>
+    <a href="/dashboard" class="nav-link">
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="/add_vehicle" class="nav-link">
+        <span class="nav-icon">🚗</span>
+        <span>My Vehicles</span>
+    </a>
+
+    <a href="/book_service" class="nav-link active">
+        <span class="nav-icon">🔧</span>
+        <span>Book a Service</span>
+    </a>
+
+    <a href="/dashboard#services" class="nav-link">
+        <span class="nav-icon">📋</span>
+        <span>Service History</span>
+    </a>
+
+    <a href="/dashboard#invoices" class="nav-link">
+        <span class="nav-icon">🧾</span>
+        <span>My Invoices</span>
+    </a>
+</nav>
+
+<div class="sidebar-bottom">
+    <a href="/logout" class="nav-link">
+        <span class="nav-icon">↪</span>
+        <span>Logout</span>
+    </a>
+</div>
+```
+
+</aside>
+
+<main class="main">
+
+```
+<header class="topbar">
+    <div>
+        <div class="eyebrow">VEHICLECARE CUSTOMER PORTAL</div>
+        <h1>Book a Service</h1>
+        <p>Schedule your vehicle's next service in just a few steps.</p>
+    </div>
+
+    <div class="profile">
+        <div class="avatar">
+            {{ (session.get("user_name") or "U")[0]|upper }}
+        </div>
+        <div>
+            <strong>{{ session.get("user_name", "Customer") }}</strong>
+            <small>Customer Account</small>
+        </div>
+    </div>
+</header>
+
+<section class="banner">
+    <div>
+        <h2>Keep Your Vehicle Running Smoothly 🚗</h2>
+        <p>Choose your vehicle, select the service you need, and tell us a little about the issue. Our team will take it from there.</p>
+    </div>
+    <div class="banner-icon">🔧</div>
+</section>
+
+<div class="content-grid">
+
+    <section class="card">
+
+        <div class="card-heading">
+            <div class="heading-icon">🛠️</div>
+            <div>
+                <h2>Service Booking Details</h2>
+                <p>Complete the form below to submit your service request.</p>
+            </div>
+        </div>
+
+        <form method="POST" action="/book_service">
+
+            <div class="form-group">
+                <label for="vehicle_id">Select Vehicle <span class="required">*</span></label>
+
+                <select name="vehicle_id" id="vehicle_id" required>
+                    <option value="">-- Select Your Vehicle --</option>
+
+                    {% for vehicle in vehicles %}
+                        <option value="{{ vehicle[0] }}">
+                            {{ vehicle[3] }} {{ vehicle[4] }} — {{ vehicle[2] }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <span class="form-help">Choose the registered vehicle you want serviced.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="service_type">Service Type <span class="required">*</span></label>
+
+                <select name="service_type" id="service_type" required>
+    <option value="">-- Select Service --</option>
+    <option value="General Service">General Service</option>
+    <option value="Oil Change">Oil Change</option>
+    <option value="Engine Repair">Engine Repair</option>
+    <option value="Brake Repair">Brake Repair</option>
+    <option value="Battery Service">Battery Service</option>
+    <option value="Tyre Service">Tyre Service</option>
+    <option value="AC Repair">AC Repair</option>
+</select>
+
+                <span class="form-help">Select the maintenance or repair service you require.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Describe the Issue or Requirements <span class="required">*</span></label>
+
+                <textarea
+                    name="description"
+                    id="description"
+                    placeholder="Example: The vehicle needs regular servicing. I have noticed an unusual noise from the brakes..."
+                    required
+                    maxlength="1000"
+                ></textarea>
+
+                <span class="form-help">Include any symptoms or special instructions that may help the mechanic.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="service_date">Preferred Service Date <span class="required">*</span></label>
+
+                <input
+                    type="date"
+                    name="service_date"
+                    id="service_date"
+                    required
+                >
+
+                <span class="form-help">Choose your preferred date. The final schedule may depend on availability.</span>
+            </div>
+
+            <div class="form-actions">
+                <a href="/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+                <button type="submit" class="btn btn-primary">Submit Booking →</button>
+            </div>
+
+        </form>
+    </section>
+
+    <aside>
+        <div class="side-card">
+            <h3>📌 How It Works</h3>
+
+            <div class="step">
+                <div class="step-number">01</div>
+                <div>
+                    <h4>Select Your Vehicle</h4>
+                    <p>Choose a vehicle already registered in your account.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">02</div>
+                <div>
+                    <h4>Describe Your Requirements</h4>
+                    <p>Select a service and provide details about the work needed.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">03</div>
+                <div>
+                    <h4>Submit Your Request</h4>
+                    <p>Your request can then be reviewed by the service team.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">04</div>
+                <div>
+                    <h4>Track Your Service</h4>
+                    <p>Visit your dashboard to check the status and mechanic assignment.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tip-card">
+            <h3>💡 Helpful Tip</h3>
+            <p>Describe unusual sounds, warning lights, performance problems, or other symptoms clearly. This helps the service team understand your requirements.</p>
+        </div>
+    </aside>
+
+</div>
+
+<footer class="footer">
+    © 2026 VehicleCare. Your vehicle, our priority.
+</footer>
+```
+
+</main>
+
+<script>
+    // Prevent selecting a date earlier than today.
+    const dateInput = document.getElementById("service_date");
+
+    const today = new Date();
+    const localToday = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, "0"),
+        String(today.getDate()).padStart(2, "0")
+    ].join("-");
+
+    dateInput.min = localToday;
+</script>
+
+</body>
+</html>

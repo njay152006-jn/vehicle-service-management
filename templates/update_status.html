@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Update Service Status - VehicleCare</title>
+</head>
+
+<body>
+
+    <h1>Update Service Status</h1>
+
+    <form method="POST" action="/update_status">
+
+        <label>Select Service:</label>
+
+        <select name="service_id" required>
+
+            <option value="">-- Select Service --</option>
+
+            {% for service in services %}
+
+                <option value="{{ service[0] }}">
+                    {{ service[1] }} - {{ service[2] }} -
+                    Current Status: {{ service[3] }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <label>New Status:</label>
+
+        <select name="status" required>
+
+    <option value="Pending">Pending</option>
+    <option value="Assigned">Assigned</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Completed">Completed</option>
+
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">Update Status</button>
+
+    </form>
+
+    <br>
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+</body>
+
+</html>

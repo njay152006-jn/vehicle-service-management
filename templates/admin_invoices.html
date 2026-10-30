@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Invoices | VehicleCare</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: #111827;
+            color: white;
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            padding: 0 10px 35px;
+        }
+
+        .brand span {
+            color: #38bdf8;
+        }
+
+        .menu-label {
+            color: #94a3b8;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            padding: 0 12px;
+            margin-bottom: 14px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #263449;
+            color: #38bdf8;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 25px;
+        }
+
+        .logout {
+            color: #fca5a5;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 32px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 11px 15px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .secondary-btn:hover {
+            background: #f8fafc;
+        }
+
+        .top-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 27px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 5px 18px #0f172a08;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: 800;
+            color: #172554;
+            overflow-wrap: anywhere;
+        }
+
+        .stat-note {
+            margin-top: 8px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px #0f172a08;
+        }
+
+        .table-heading {
+            padding: 22px 24px;
+            border-bottom: 1px solid #e8edf4;
+        }
+
+        .table-heading h2 {
+            font-size: 19px;
+            margin-bottom: 6px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1250px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 17px;
+            text-align: left;
+            border-bottom: 1px solid #eef2f7;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .invoice-id {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 7px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 700;
+        }
+
+        .vehicle-number {
+            font-weight: 700;
+            color: #334155;
+            white-space: nowrap;
+        }
+
+        .service-type {
+            color: #475569;
+        }
+
+        .amount {
+            font-weight: 700;
+            color: #172554;
+            white-space: nowrap;
+        }
+
+        .payment-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .view-btn {
+            display: inline-block;
+            padding: 8px 11px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .view-btn:hover {
+            background: #bfdbfe;
+        }
+
+        .payment-form {
+            min-width: 130px;
+        }
+
+        .payment-form select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            color: #334155;
+            font-size: 12px;
+        }
+
+        .update-btn {
+            width: 100%;
+            margin-top: 7px;
+            padding: 8px 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .update-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #64748b;
+        }
+
+        .empty-state .icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 28px 0 5px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 1000px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .main {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .brand {
+                padding: 0 8px 18px;
+            }
+
+            .menu-label {
+                display: none;
+            }
+
+            .sidebar-bottom {
+                margin-top: 10px;
+                padding-top: 0;
+            }
+
+            .main {
+                padding: 20px 14px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-actions {
+                width: 100%;
+            }
+
+            .top-actions .button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">Vehicle<span>Care</span></div>
+
+        <div class="menu-label">ADMIN MENU</div>
+
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+                ▦ &nbsp; Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_services') }}" class="nav-link">
+                🔧 &nbsp; Manage Services
+            </a>
+
+            <a href="{{ url_for('mechanics') }}" class="nav-link">
+                🧑‍🔧 &nbsp; Manage Mechanics
+            </a>
+
+            <a href="{{ url_for('assign_mechanic') }}" class="nav-link">
+                👨‍🔧 &nbsp; Assign Mechanic
+            </a>
+
+            <a href="{{ url_for('admin_invoices') }}" class="nav-link active">
+                🧾 &nbsp; Manage Invoices
+            </a>
+
+            <a href="{{ url_for('create_invoice') }}" class="nav-link">
+                ＋ &nbsp; Create Invoice
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="{{ url_for('home') }}" class="nav-link">
+                ⌂ &nbsp; View Website
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="nav-link logout">
+                ↪ &nbsp; Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Manage Invoices</h1>
+                <p class="subtitle">
+                    Review service invoices and manage customer payment status.
+                </p>
+            </div>
+
+            <div class="top-actions">
+                <a href="{{ url_for('create_invoice') }}"
+                   class="button primary-btn">
+                    ＋ Create Invoice
+                </a>
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="button secondary-btn">
+                    ← Dashboard
+                </a>
+            </div>
+        </header>
+
+        <!-- Summary cards -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <p class="stat-label">Total Invoices</p>
+                <h2 class="stat-value">{{ invoices|length }}</h2>
+                <p class="stat-note">All recorded invoices</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-label">Paid Invoices</p>
+                <h2 class="stat-value">
+                    {{ invoices|selectattr('payment_status', 'equalto', 'Paid')|list|length }}
+                </h2>
+                <p class="stat-note">Payments marked as paid</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-label">Pending Invoices</p>
+                <h2 class="stat-value">
+                    {{ invoices|selectattr('payment_status', 'equalto', 'Pending')|list|length }}
+                </h2>
+                <p class="stat-note">Payments awaiting confirmation</p>
+            </div>
+
+        </section>
+
+        <!-- Invoice table -->
+        <section class="table-card">
+
+            <div class="table-heading">
+                <h2>Invoice Directory</h2>
+                <p class="subtitle">
+                    View invoice details and update payment status.
+                </p>
+            </div>
+
+            <div class="table-wrap">
+
+                {% if invoices %}
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Service ID</th>
+                        <th>Vehicle Number</th>
+                        <th>Service Type</th>
+                        <th>Labour Cost</th>
+                        <th>Parts Cost</th>
+                        <th>Total Amount</th>
+                        <th>Invoice Date</th>
+                        <th>Payment Status</th>
+                        <th>View Invoice</th>
+                        <th>Update Payment</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for invoice in invoices %}
+                    <tr>
+                        <td>
+                            <span class="invoice-id">#{{ invoice.id }}</span>
+                        </td>
+
+                        <td>{{ invoice.service_id }}</td>
+
+                        <td class="vehicle-number">
+                            {{ invoice.vehicle_number or 'N/A' }}
+                        </td>
+
+                        <td class="service-type">
+                            {{ invoice.service_type or 'N/A' }}
+                        </td>
+
+                        <td>₹{{ "%.2f"|format(invoice.labour_cost|float) }}</td>
+
+                        <td>₹{{ "%.2f"|format(invoice.parts_cost|float) }}</td>
+
+                        <td class="amount">
+                            ₹{{ "%.2f"|format(invoice.total_amount|float) }}
+                        </td>
+
+                        <td>{{ invoice.invoice_date }}</td>
+
+                        <td>
+                            {% if invoice.payment_status == 'Paid' %}
+                                <span class="payment-badge paid">✓ Paid</span>
+                            {% else %}
+                                <span class="payment-badge pending">◷ Pending</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <a href="{{ url_for('view_invoice', invoice_id=invoice.id) }}"
+                               class="view-btn">
+                                View / Print
+                            </a>
+                        </td>
+
+                        <td>
+                            <form
+                                action="{{ url_for('update_invoice_status', invoice_id=invoice.id) }}"
+                                method="POST"
+                                class="payment-form">
+
+                                <select name="payment_status" required>
+                                    <option value="Pending"
+                                        {% if invoice.payment_status == 'Pending' %}selected{% endif %}>
+                                        Pending
+                                    </option>
+
+                                    <option value="Paid"
+                                        {% if invoice.payment_status == 'Paid' %}selected{% endif %}>
+                                        Paid
+                                    </option>
+                                </select>
+
+                                <button type="submit" class="update-btn">
+                                    Update Status
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% else %}
+                <div class="empty-state">
+                    <div class="icon">🧾</div>
+                    <h3>No invoices found</h3>
+                    <p>Create your first invoice to see it listed here.</p>
+
+                    <a href="{{ url_for('create_invoice') }}"
+                       class="button primary-btn">
+                        ＋ Create Invoice
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+        </section>
+
+        <footer class="footer">
+            © 2026 VehicleCare. Admin Panel.
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>
+
