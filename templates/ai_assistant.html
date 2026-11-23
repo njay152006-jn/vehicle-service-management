@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VehicleCare AI Assistant</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 850px;
+            height: 85vh;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #123b68;
+            color: white;
+            padding: 22px;
+        }
+
+        .chat-header h2 {
+            margin-bottom: 6px;
+        }
+
+        .chat-header p {
+            font-size: 13px;
+            color: #dbeafe;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 13px 16px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .bot-message {
+            background: #e2e8f0;
+            color: #1e293b;
+            border-bottom-left-radius: 2px;
+        }
+
+        .user-message {
+            background: #2563eb;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 18px;
+            border-top: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input-area button {
+            border: none;
+            padding: 0 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+        }
+
+        .send-btn {
+            background: #2563eb;
+        }
+
+        .mic-btn {
+            background: #16a34a;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: #dbeafe;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        @media(max-width: 600px) {
+            .chat-container {
+                height: 90vh;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .chat-input-area {
+                gap: 6px;
+                padding: 12px;
+            }
+
+            .chat-input-area button {
+                padding: 0 12px;
+            }
+        }
+        /* Fix chat page scrolling */
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.chat-container {
+    height: 85vh;
+    max-height: 850px;
+}
+
+.chat-messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="chat-container">
+
+    <div class="chat-header">
+        <h2>🚗 VehicleCare AI Assistant</h2>
+        <p>Your smart vehicle service assistant</p>
+        <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+
+        <div class="message bot-message">
+            Hello! Welcome to VehicleCare AI. 👋<br><br>
+            Tell me what problem you are experiencing with your vehicle.
+            I will help you understand possible causes and suggest a suitable
+            service category.
+        </div>
+
+    </div>
+
+    <div class="chat-input-area">
+
+        <input
+            type="text"
+            id="userInput"
+            placeholder="Describe your vehicle problem..."
+        >
+
+        <button class="mic-btn" id="micButton" type="button">
+            🎤
+        </button>
+
+        <button class="send-btn" id="sendButton" type="button">
+            Send
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+<script>
+const sendButton = document.getElementById("sendButton");
+const userInput = document.getElementById("userInput");
+const chatMessages = document.getElementById("chatMessages");
+const micButton = document.getElementById("micButton");
+
+// Display messages
+function addMessage(message, className) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "message " + className;
+    messageDiv.textContent = message;
+
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Speak AI response
+function speakResponse(message) {
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+
+        const speech = new SpeechSynthesisUtterance(message);
+        speech.lang = "en-IN";
+        speech.rate = 1;
+
+        window.speechSynthesis.speak(speech);
+    }
+}
+
+// Send message to Gemini
+async function sendMessage() {
+    const message = userInput.value.trim();
+
+    if (!message) return;
+
+    addMessage(message, "user-message");
+    userInput.value = "";
+
+    sendButton.disabled = true;
+    sendButton.textContent = "Wait...";
+
+    try {
+        const response = await fetch("/ai_chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        const data = await response.json();
+        const reply = data.reply || "Something went wrong.";
+
+        addMessage(reply, "bot-message");
+
+        // Speak only when the customer requests a voice response
+const voiceRequest = /\b(voice|speak|spoken|talk|read aloud|say it)\b/i.test(message);
+
+if (response.ok && voiceRequest) {
+    speakResponse(reply);
+}
+    } catch (error) {
+        addMessage(
+            "Unable to connect. Please check your connection.",
+            "bot-message"
+        );
+    } finally {
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
+    }
+}
+
+// Send button
+sendButton.addEventListener("click", sendMessage);
+
+// Enter key
+userInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+
+// Voice recognition
+const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    micButton.addEventListener("click", function() {
+        try {
+            recognition.start();
+            micButton.textContent = "Listening...";
+        } catch (error) {
+            addMessage(
+                "Microphone is already active. Please try again.",
+                "bot-message"
+            );
+        }
+    });
+
+    recognition.onresult = function(event) {
+        const spokenText = event.results[0][0].transcript;
+
+        userInput.value = spokenText;
+        sendMessage();
+    };
+
+    recognition.onend = function() {
+        micButton.textContent = "🎤";
+    };
+
+    recognition.onerror = function(event) {
+        micButton.textContent = "🎤";
+
+        addMessage(
+            "Voice recognition error: " + event.error,
+            "bot-message"
+        );
+    };
+
+} else {
+    micButton.disabled = true;
+    micButton.title = "Voice recognition is not supported.";
+}
+</script>
+</html>

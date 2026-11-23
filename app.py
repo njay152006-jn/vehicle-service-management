@@ -1,5 +1,14 @@
-from flask import Flask, flash, render_template, request, redirect, url_for, session
+import os
+from dotenv import load_dotenv
+from google import genai
+from flask import Flask, flash, render_template, request, redirect, url_for, session, jsonify
 import mysql.connector
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -878,6 +887,146 @@ def feedback():
     return redirect("/feedback")
 
  return render_template("feedback.html")
+@app.route("/ai_assistant")
+def ai_assistant():
+
+    # Check whether the customer is logged in
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    return render_template("ai_assistant.html")
+
+@app.route("/ai_chat", methods=["POST"])
+def ai_chat():
+
+    if "user_id" not in session:
+        return jsonify({
+            "reply": "Please log in to use VehicleCare AI."
+        }), 401
+
+    data = request.get_json()
+    message = data.get("message", "").strip() if data else ""
+
+    if not message:
+        return jsonify({
+            "reply": "Please describe your vehicle problem."
+        }), 400
+
+    if client is None:
+        return jsonify({
+            "reply": "Gemini API is not configured. Please check your API settings."
+        }), 500
+
+    prompt = f"""
+You are VehicleCare AI, an intelligent and professional vehicle
+service advisor integrated into a vehicle service management system.
+
+YOUR ROLE:
+Help customers understand vehicle problems and choose appropriate
+vehicle maintenance or repair services.
+
+CUSTOMER'S MESSAGE:
+{message}
+
+INSTRUCTIONS:
+
+1. UNDERSTAND THE PROBLEM
+Carefully understand the customer's complaint.
+Do not assume details that the customer has not provided.
+
+2. POSSIBLE CAUSES
+Explain 2 to 4 possible reasons for the reported problem.
+Explain each reason in simple language.
+Do not present possibilities as confirmed diagnoses.
+
+3. RECOMMENDED SERVICE
+Suggest the most relevant service category, such as:
+- Engine Inspection
+- Brake Inspection
+- Battery Service
+- Oil Change
+- Tyre Inspection
+- Wheel Alignment
+- AC Service
+- General Maintenance
+- Electrical System Inspection
+
+Only recommend services relevant to the complaint.
+
+4. URGENCY LEVEL
+Choose one:
+- LOW: Routine maintenance or a minor concern.
+- MEDIUM: The vehicle should be inspected soon.
+- HIGH: A potentially serious safety or mechanical issue.
+
+Explain why you selected that urgency.
+
+If the customer reports brake failure, steering problems,
+smoke, overheating, or another serious warning sign,
+advise them to stop driving when safe and arrange professional
+assistance. Do not encourage them to continue driving.
+
+5. NEXT STEPS
+Give the customer practical next steps.
+Explain what a qualified mechanic should inspect.
+
+6. FOLLOW-UP QUESTIONS
+If the complaint is unclear, ask one or two useful questions
+to understand the issue better.
+
+7. COMMUNICATION STYLE
+- Use simple, natural English.
+- Be polite, professional and helpful.
+- Give meaningful explanations instead of one-line answers.
+- Avoid unnecessary technical terminology.
+- Do not repeat the same information.
+- Do not invent repair costs or service availability.
+- Never claim that you have physically inspected the vehicle.
+
+RESPONSE FORMAT:
+
+VehicleCare AI Analysis
+
+Problem Understanding:
+Briefly explain what you understood.
+
+Possible Causes:
+Explain the possible causes.
+
+Recommended Service:
+Mention the suitable service and why it is needed.
+
+Urgency Level:
+LOW / MEDIUM / HIGH, with an explanation.
+
+Recommended Next Step:
+Explain what the customer should do next.
+
+End with a helpful follow-up question when necessary.
+
+Remember: Your suggestions are preliminary. A qualified mechanic
+must inspect the vehicle to confirm the actual problem.
+"""
+
+    try:
+        response = client.models.generate_content(
+            model=GEMINI_MODEL,
+            contents=prompt
+        )
+
+        reply = response.text
+
+        if not reply:
+            reply = "Sorry, I could not generate a response. Please try again."
+
+        return jsonify({"reply": reply})
+
+    except Exception as error:
+        print("Gemini Error:", error)
+
+        return jsonify({
+            "reply": "VehicleCare AI is temporarily unavailable. Please try again."
+        }), 503
 
 
 if __name__ == "__main__":

@@ -711,6 +711,26 @@
             flex-direction: column;
         }
     }
+    /* Customer Dashboard Sidebar Scrolling */
+
+.sidebar {
+    height: 100vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    scrollbar-width: thin;
+    scrollbar-color: #52658a #111e38;
+}
+
+/* Smooth sidebar scrolling */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #52658a;
+    border-radius: 10px;
+}
 </style>
 
 
@@ -757,10 +777,23 @@
             <p>Have a question about your vehicle service?</p>
             <a href="#services">View service updates →</a>
         </div>
+       <div class="ai-assistant-card">
+    <div class="ai-assistant-icon">🤖</div>
+
+    <div class="ai-assistant-content">
+        <h3>VehicleCare AI Assistant</h3>
+       
+    </div>
+
+    <a href="{{ url_for('ai_assistant') }}" class="ai-assistant-btn">
+        Chat with AI🤖 
+    </a>
+</div>
 
         <a href="/logout" class="nav-link logout">
             <span class="nav-icon">↪</span><span>Logout</span>
         </a>
+        
     </div>
 </aside>
 
@@ -971,7 +1004,7 @@
                     <p>Review your service charges.</p>
                 </div>
             </div>
-
+            
             <div class="panel">
                 {% if invoices %}
                     {% for invoice in invoices %}

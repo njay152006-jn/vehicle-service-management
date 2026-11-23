@@ -348,3 +348,64 @@ footer {
     html { scroll-behavior: auto; }
     * { transition: none !important; }
 }
+/* ===== VehicleCare AI Assistant ===== */
+
+.ai-assistant-card {
+    background: var(--petrol);
+    color: var(--white);
+    padding: 30px;
+    border-radius: 16px;
+    margin: 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    box-shadow: 0 10px 25px rgba(11, 61, 66, 0.12);
+}
+
+.ai-assistant-icon {
+    font-size: 42px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.ai-assistant-content {
+    flex: 1;
+}
+
+.ai-assistant-content h3 {
+    font-size: 21px;
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.ai-assistant-content p {
+    color: #cfe3e3;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ai-assistant-btn {
+    display: inline-block;
+    background: var(--signal);
+    color: var(--petrol-deep);
+    padding: 13px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 800;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.ai-assistant-btn:hover {
+    background: var(--signal-dark);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 650px) {
+    .ai-assistant-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
